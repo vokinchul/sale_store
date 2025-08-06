@@ -1,0 +1,80 @@
+.gradle
+
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Built files
+*.apk
+*.aab
+*.ap_
+*.aar
+*.jar
+*.class
+
+# Gradle files
+.gradle/
+build/
+captures/
+intermediates/
+outputs/
+
+# Local configuration files
+*.iml
+.idea_modules/
+/local.properties
+
+# Keystore files
+*.jks
+*.keystore
+*.key
+
+# Firebase and Google Services
+google-services.json
+google-services.xml
+firebase-config.json
+
+# Android Studio
+.navigation/
+*.swp
+*.log
+*.ipr
+*.iws
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs
+log/
+logs/
+
+# Environment
+.env
+.env.development
+.env.production
+
+# Covers JetBrains IDEs
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/datasources.xml
+.idea/dataSources.ids
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
