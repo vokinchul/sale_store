@@ -8,7 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
@@ -16,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vokinchul.MyApp
 import com.vokinchul.salestore.data.api.FakeStoreApi
+import com.vokinchul.salestore.domain.model.Product
 import com.vokinchul.salestore.ui.navigation.Screens
 import com.vokinchul.salestore.ui.screens.MainScreen
 import com.vokinchul.salestore.ui.theme.SaleStoreTheme
@@ -25,6 +29,10 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var apiService: FakeStoreApi
+
+    private var productsState by mutableStateOf<List<Product>>(emptyList())
+    private var isLoading by mutableStateOf(true)
+    private var error by mutableStateOf<String?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,29 +52,85 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
+
+                    LaunchedEffect(Unit) {
+                        loadProducts()
+                    }
+
                     NavHost(
                         navController = navController,
                         startDestination = Screens.MainScreen.name
-                    ){
+                    ) {
                         composable(Screens.MainScreen.name) {
-                            /*
                             MainScreen(
                                 navController = navController,
-                                product = TODO(),
-                                modifier = TODO(),
-                                onProductClick = TODO()
-                            )*/
+                                products = productsState,
+                                isLoading = isLoading,
+                                error = error,
+                                onRetry = { loadProducts() },
+                                onProductClick = { product ->
+                                    navController.navigate("product_detail/${product.id}")
+                                }
+                            )
                         }
-                        /*composable(Screens.AuthorizationScreen.name) {
-                            // Экран авторизации
-                            AuthorizationScreen(navController = navController)
+
+                        /*
+                        composable(Screens.AuthorizationScreen.name) {
+                            AuthorizationScreen(
+                                navController = navController,
+                                onLoginSuccess = {
+                                    // После успешной авторизации возвращаемся назад
+                                    navController.popBackStack()
+                                }
+                            )
                         }
+
                         composable(Screens.ShoppingCartScreen.name) {
-                            // Корзина покупок
-                            ShoppingCartScreen(navController = navController)
-                        }*/
+                            ShoppingCartScreen(
+                                navController = navController,
+                                products = productsState.filter { *//* логика корзины *//* }
+                            )
+                        }
+
+                        // Детали товара с аргументом
+                        composable(
+                            route = "product_detail/{productId}",
+                            arguments = listOf(
+                                navArgument("productId") { type = NavType.IntType }
+                            )
+                        ) { backStackEntry ->
+                            val productId = backStackEntry.arguments?.getInt("productId")
+                            val product = productsState.find { it.id == productId }
+
+                            if (product != null) {
+                                ProductDetailScreen(
+                                    navController = navController,
+                                    product = product
+                                )
+                            } else {
+                                // Обработка случая, когда товар не найден
+                            }
+                        }
+                        */
                     }
                 }
+            }
+        }
+    }
+
+    private fun loadProducts() {
+        lifecycleScope.launch {
+            isLoading = true
+            error = null
+            try {
+                val products = apiService.getProducts(limit = 30)
+                productsState = products
+                Log.d("API", "Загружено продуктов: ${products.size}")
+            } catch (e: Exception) {
+                error = "Ошибка загрузки: ${e.message}"
+                Log.e("API", "Ошибка загрузки", e)
+            } finally {
+                isLoading = false
             }
         }
     }
