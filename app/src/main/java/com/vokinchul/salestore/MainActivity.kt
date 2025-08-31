@@ -12,10 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vokinchul.MyApp
 import com.vokinchul.salestore.data.api.FakeStoreApi
 import com.vokinchul.salestore.ui.navigation.Screens
+import com.vokinchul.salestore.ui.screens.MainScreen
 import com.vokinchul.salestore.ui.theme.SaleStoreTheme
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
@@ -46,9 +48,24 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = Screens.MainScreen.name
                     ){
-
+                        composable(Screens.MainScreen.name) {
+                            /*
+                            MainScreen(
+                                navController = navController,
+                                product = TODO(),
+                                modifier = TODO(),
+                                onProductClick = TODO()
+                            )*/
+                        }
+                        /*composable(Screens.AuthorizationScreen.name) {
+                            // Экран авторизации
+                            AuthorizationScreen(navController = navController)
+                        }
+                        composable(Screens.ShoppingCartScreen.name) {
+                            // Корзина покупок
+                            ShoppingCartScreen(navController = navController)
+                        }*/
                     }
-                    Text(text = "Проверка API в Logcat...")
                 }
             }
         }

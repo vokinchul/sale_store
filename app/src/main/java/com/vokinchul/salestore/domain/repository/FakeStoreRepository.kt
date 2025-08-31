@@ -10,11 +10,8 @@ interface FakeStoreRepository {
     suspend fun getProduct(id: Int): Product
     suspend fun getProductsByCategory(category: String, sort: String? = null): List<Product>
     suspend fun getCategories(): List<String>
-
     suspend fun addCart(cart: Cart): Cart
     suspend fun getCart(id: Int): Cart
-
     suspend fun getUser(id: Int): User
-
     suspend fun login(username: String, password: String): AuthToken
 }

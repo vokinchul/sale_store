@@ -13,7 +13,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface FakeStoreApi {
-
     @GET("products")
     suspend fun getProducts(
         @Query("limit") limit: Int? = null,
