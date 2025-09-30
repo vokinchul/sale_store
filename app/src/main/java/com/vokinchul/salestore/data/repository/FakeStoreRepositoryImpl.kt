@@ -2,6 +2,9 @@ package com.vokinchul.salestore.data.repository
 
 import com.vokinchul.salestore.data.api.FakeStoreApi
 import com.vokinchul.salestore.data.api.LoginRequest
+import com.vokinchul.salestore.data.dao.ProductDao
+import com.vokinchul.salestore.data.mapper.toEntityList
+import com.vokinchul.salestore.data.mapper.toProductList
 import com.vokinchul.salestore.domain.model.AuthToken
 import com.vokinchul.salestore.domain.model.Cart
 import com.vokinchul.salestore.domain.model.Product
@@ -10,14 +13,25 @@ import com.vokinchul.salestore.domain.repository.FakeStoreRepository
 import jakarta.inject.Inject
 
 class FakeStoreRepositoryImpl @Inject constructor(
-    private val api: FakeStoreApi
+    private val api: FakeStoreApi,
+    private val productDao: ProductDao
 ) : FakeStoreRepository {
 
     override suspend fun getProducts(limit: Int?, sort: String?): List<Product> {
         return try {
-            api.getProducts(limit, sort)
+            // Пытаемся получить из сети
+            val products = api.getProducts(limit, sort)
+            // Сохраняем в кэш
+            productDao.insertAll(products.toEntityList())
+            products
         } catch (e: Exception) {
-            throw Exception("Ошибка при получении продуктов: ${e.message}")
+            // Если ошибка - пробуем взять из кэша
+            val cachedProducts = productDao.getAllProducts()
+            if (cachedProducts.isNotEmpty()) {
+                cachedProducts.toProductList()
+            } else {
+                throw Exception("Ошибка при получении продуктов: ${e.message}")
+            }
         }
     }
 

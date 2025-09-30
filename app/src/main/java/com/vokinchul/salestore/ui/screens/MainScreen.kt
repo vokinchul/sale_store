@@ -114,16 +114,8 @@ fun MainScreen(
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                onRetry?.let {
-                    Button(onClick = it) {
-                        Text("Повторить")
-                    }
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Button(
-                    onClick = { navController?.navigate(Screens.AuthorizationScreen.name) }
-                ) {
-                    Text("Авторизация")
+                Button(onClick = onRetry) {
+                    Text("Повторить")
                 }
             }
         }
