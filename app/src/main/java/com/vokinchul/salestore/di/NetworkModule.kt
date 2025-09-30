@@ -1,15 +1,14 @@
-package com.vokinchul.salestore.data.api
+package com.vokinchul.salestore.di
 
+import com.vokinchul.salestore.data.api.FakeStoreApi
 import dagger.Module
 import dagger.Provides
-import jakarta.inject.Singleton
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 class NetworkModule {
     @Provides
-    @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://fakestoreapi.com/")
@@ -18,7 +17,6 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
     fun provideApiService(retrofit: Retrofit): FakeStoreApi {
         return retrofit.create(FakeStoreApi::class.java)
     }
