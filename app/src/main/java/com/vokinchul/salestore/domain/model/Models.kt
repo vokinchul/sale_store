@@ -7,7 +7,8 @@ data class Product(
     val description: String,
     val category: String,
     val image: String,
-    val rating: Rating
+    val rating: Rating,
+    var isInCart: Boolean = false
 )
 
 data class Rating(

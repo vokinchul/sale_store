@@ -13,5 +13,6 @@ data class ProductEntity(
     val category: String,
     val image: String,
     val rate: Double,
-    val count: Int
+    val count: Int,
+    val isInCart: Boolean = false
 )

@@ -7,7 +7,7 @@ import com.vokinchul.salestore.data.model.ProductEntity
 
 @Database(
     entities = [ProductEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

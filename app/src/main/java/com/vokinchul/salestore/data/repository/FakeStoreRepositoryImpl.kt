@@ -4,6 +4,7 @@ import com.vokinchul.salestore.data.api.FakeStoreApi
 import com.vokinchul.salestore.data.api.LoginRequest
 import com.vokinchul.salestore.data.dao.ProductDao
 import com.vokinchul.salestore.data.mapper.toEntityList
+import com.vokinchul.salestore.data.mapper.toProduct
 import com.vokinchul.salestore.data.mapper.toProductList
 import com.vokinchul.salestore.domain.model.AuthToken
 import com.vokinchul.salestore.domain.model.Cart
@@ -37,9 +38,14 @@ class FakeStoreRepositoryImpl @Inject constructor(
 
     override suspend fun getProduct(id: Int): Product {
         return try {
-            api.getProduct(id)
+            val product = api.getProduct(id)
+            // Проверяем статус корзины из БД
+            val cachedProduct = productDao.getProductById(id)
+            product.copy(isInCart = cachedProduct?.isInCart ?: false)
         } catch (e: Exception) {
-            throw Exception("Ошибка при получении продукта с ID $id: ${e.message}")
+            val cachedProduct = productDao.getProductById(id)
+            cachedProduct?.toProduct()
+                ?: throw Exception("Ошибка при получении продукта с ID $id: ${e.message}")
         }
     }
 
@@ -88,6 +94,21 @@ class FakeStoreRepositoryImpl @Inject constructor(
             api.login(LoginRequest(username, password))
         } catch (e: Exception) {
             throw Exception("Ошибка при авторизации: ${e.message}")
+        }
+    }
+
+    override suspend fun updateProductInCart(productId: Int, isInCart: Boolean) {
+        productDao.updateCartStatus(productId, isInCart)
+    }
+
+    override suspend fun getCartProducts(): List<Product> {
+        return productDao.getCartProducts().toProductList()
+    }
+
+    override suspend fun clearCart() {
+        val cartProducts = productDao.getCartProducts()
+        cartProducts.forEach { product ->
+            productDao.updateCartStatus(product.id, false)
         }
     }
 }
