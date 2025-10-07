@@ -82,7 +82,6 @@ class MainActivity : ComponentActivity() {
                                 ProductDetailScreen(
                                     productId = productId,
                                     viewModelFactory = viewModelFactory,
-                                    navController = navController,
                                     onBackClick = { navController.popBackStack() }
                                 )
                             } else {
