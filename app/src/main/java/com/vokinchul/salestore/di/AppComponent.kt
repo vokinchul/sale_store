@@ -6,13 +6,15 @@ import dagger.Component
 import jakarta.inject.Singleton
 
 @Singleton
-@Component(modules = [
-    ContextModule::class,
-    NetworkModule::class,
-    DatabaseModule::class,
-    RepositoryModule::class,
-    ViewModelModule::class
-])
+@Component(
+    modules = [
+        ContextModule::class,
+        NetworkModule::class,
+        DatabaseModule::class,
+        RepositoryModule::class,
+        ViewModelModule::class
+    ]
+)
 interface AppComponent {
     fun inject(app: MyApp)
     fun inject(activity: MainActivity)

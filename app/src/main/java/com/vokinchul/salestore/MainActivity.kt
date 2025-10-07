@@ -27,6 +27,7 @@ import com.vokinchul.salestore.domain.repository.FakeStoreRepository
 import com.vokinchul.salestore.ui.navigation.Screens
 import com.vokinchul.salestore.ui.screens.MainScreen
 import com.vokinchul.salestore.ui.screens.ProductDetailScreen
+import com.vokinchul.salestore.ui.screens.ShoppingCartScreen
 import com.vokinchul.salestore.ui.theme.SaleStoreTheme
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
@@ -77,7 +78,8 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable("product_detail/{productId}") { backStackEntry ->
-                            val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
+                            val productId =
+                                backStackEntry.arguments?.getString("productId")?.toIntOrNull()
                             if (productId != null) {
                                 ProductDetailScreen(
                                     productId = productId,
@@ -85,10 +87,20 @@ class MainActivity : ComponentActivity() {
                                     onBackClick = { navController.popBackStack() }
                                 )
                             } else {
-                                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
                                     Text("Ошибка: неверный ID товара")
                                 }
                             }
+                        }
+                        composable(Screens.ShoppingCartScreen.name) {
+                            ShoppingCartScreen(
+                                viewModelFactory = viewModelFactory,
+                                navController = navController,
+                                onBackClick = { navController.popBackStack() }
+                            )
                         }
                     }
                 }
