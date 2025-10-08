@@ -142,20 +142,28 @@ fun MainScreen(
                     title = { Text("Магазин") },
                     actions = {
                         IconButton(
-                            onClick = { navController?.navigate(
-                                Screens.ShoppingCartScreen.name)
+                            onClick = {
+                                navController?.navigate(
+                                    Screens.ShoppingCartScreen.name
+                                )
                             }
                         ) {
-                            Icon(Icons.Default.ShoppingCart,
-                                contentDescription = "Корзина")
+                            Icon(
+                                Icons.Default.ShoppingCart,
+                                contentDescription = "Корзина"
+                            )
                         }
                         IconButton(
-                            onClick = { navController?.navigate(
-                                Screens.AuthorizationScreen.name)
+                            onClick = {
+                                navController?.navigate(
+                                    Screens.AuthorizationScreen.name
+                                )
                             }
                         ) {
-                            Icon(Icons.Default.AccountCircle,
-                                contentDescription = "Авторизация")
+                            Icon(
+                                Icons.Default.AccountCircle,
+                                contentDescription = "Авторизация"
+                            )
                         }
                     }
                 )

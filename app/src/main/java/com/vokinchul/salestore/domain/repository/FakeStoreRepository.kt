@@ -14,4 +14,9 @@ interface FakeStoreRepository {
     suspend fun getCart(id: Int): Cart
     suspend fun getUser(id: Int): User
     suspend fun login(username: String, password: String): AuthToken
+
+    //для корзины
+    suspend fun updateProductInCart(productId: Int, isInCart: Boolean)
+    suspend fun getCartProducts(): List<Product>
+    suspend fun clearCart()
 }

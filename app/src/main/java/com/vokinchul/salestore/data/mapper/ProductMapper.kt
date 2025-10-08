@@ -13,7 +13,8 @@ fun Product.toEntity(): ProductEntity = ProductEntity(
     category = category,
     image = image,
     rate = rating.rate,
-    count = rating.count
+    count = rating.count,
+    isInCart = isInCart
 )
 
 // Entity → Domain
@@ -24,7 +25,8 @@ fun ProductEntity.toProduct(): Product = Product(
     description = description,
     category = category,
     image = image,
-    rating = Rating(rate = rate, count = count)
+    rating = Rating(rate = rate, count = count),
+    isInCart = isInCart
 )
 
 // Для списков
